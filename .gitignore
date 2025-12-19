@@ -1,3 +1,4 @@
 .env
 .kilocode/
 __pycache__/
+.gradio/
