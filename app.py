@@ -440,7 +440,7 @@ def create_card_interface():
                             label="Your Card",
                             type="filepath",
                             elem_classes="card-preview",
-                            show_download_button=True
+                            buttons=["download"]
                         )
                         
                         share_link_output = gr.Textbox(
@@ -501,7 +501,7 @@ def create_card_interface():
                 view_output = gr.Image(
                     label="Card",
                     type="filepath",
-                    show_download_button=True
+                    buttons=["download"]
                 )
                 
                 view_info = gr.JSON(label="Card Information")
