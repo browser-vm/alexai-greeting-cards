@@ -56,52 +56,52 @@ def init_r2_client():
 
 CARD_TEMPLATES = {
     "Birthday": {
-        "prompt": "A vibrant, celebratory birthday scene with colorful balloons, confetti, and a festive atmosphere. Warm lighting, joyful colors including pink, gold, and blue. Shot in high-quality digital photography style with bokeh effect. {custom_text}",
+        "prompt": "A vibrant, celebratory birthday scene with colorful balloons, confetti, and a festive atmosphere. Warm lighting, joyful colors including pink, gold, and blue. Shot in high-quality digital photography style with bokeh effect. {recipient} {message} {date} {details}",
         "aspect_ratio": "16:9",
         "description": "Perfect for birthday celebrations with colorful and festive elements"
     },
     "Christmas": {
-        "prompt": "A cozy Christmas scene with decorated pine tree, warm fireplace, snow falling outside window, red and gold ornaments, twinkling lights. Nostalgic winter holiday atmosphere with rich textures and warm color palette. Shot in cinematic film style. {custom_text}",
+        "prompt": "A cozy Christmas scene with decorated pine tree, warm fireplace, snow falling outside window, red and gold ornaments, twinkling lights. Nostalgic winter holiday atmosphere with rich textures and warm color palette. Shot in cinematic film style. {recipient} {message} {date} {details}",
         "aspect_ratio": "16:9",
         "description": "Warm holiday scene with Christmas tree and festive decorations"
     },
     "Halloween": {
-        "prompt": "A spooky yet charming Halloween scene with carved pumpkins, autumn leaves, vintage lanterns casting warm orange glow, misty atmosphere. Gothic aesthetic with orange, purple, and black color scheme. Atmospheric fog and dramatic lighting. {custom_text}",
+        "prompt": "A spooky yet charming Halloween scene with carved pumpkins, autumn leaves, vintage lanterns casting warm orange glow, misty atmosphere. Gothic aesthetic with orange, purple, and black color scheme. Atmospheric fog and dramatic lighting. {recipient} {message} {date} {details}",
         "aspect_ratio": "16:9",
         "description": "Spooky autumn scene with pumpkins and mysterious atmosphere"
     },
     "Easter": {
-        "prompt": "A cheerful Easter scene with pastel colors, decorated eggs in basket, spring flowers blooming, soft morning sunlight, meadow setting. Gentle, dreamy photography style with soft focus. Colors: soft pink, lavender, mint green, and cream. {custom_text}",
+        "prompt": "A cheerful Easter scene with pastel colors, decorated eggs in basket, spring flowers blooming, soft morning sunlight, meadow setting. Gentle, dreamy photography style with soft focus. Colors: soft pink, lavender, mint green, and cream. {recipient} {message} {date} {details}",
         "aspect_ratio": "16:9",
         "description": "Springtime scene with Easter eggs and blooming flowers"
     },
     "Valentine's Day": {
-        "prompt": "A romantic Valentine's Day scene with roses, soft candlelight, elegant table setting, dreamy bokeh lights in background. Rich reds and soft pinks, luxurious and intimate atmosphere. Professional photography with shallow depth of field. {custom_text}",
+        "prompt": "A romantic Valentine's Day scene with roses, soft candlelight, elegant table setting, dreamy bokeh lights in background. Rich reds and soft pinks, luxurious and intimate atmosphere. Professional photography with shallow depth of field. {recipient} {message} {date} {details}",
         "aspect_ratio": "16:9",
         "description": "Romantic scene with roses and elegant candlelit setting"
     },
     "Thanksgiving": {
-        "prompt": "A warm Thanksgiving scene with harvest table, autumn decorations, pumpkins, golden wheat, warm candles, rustic wooden setting. Rich autumn colors: orange, burgundy, gold, brown. Cozy family gathering atmosphere. {custom_text}",
+        "prompt": "A warm Thanksgiving scene with harvest table, autumn decorations, pumpkins, golden wheat, warm candles, rustic wooden setting. Rich autumn colors: orange, burgundy, gold, brown. Cozy family gathering atmosphere. {recipient} {message} {date} {details}",
         "aspect_ratio": "16:9",
         "description": "Harvest scene with autumn colors and cozy atmosphere"
     },
     "New Year": {
-        "prompt": "An elegant New Year's celebration scene with champagne glasses, fireworks, golden confetti, clock showing midnight, sophisticated party setting. Luxurious color palette: gold, silver, black, deep blue. Celebratory and hopeful atmosphere. {custom_text}",
+        "prompt": "An elegant New Year's celebration scene with champagne glasses, fireworks, golden confetti, clock showing midnight, sophisticated party setting. Luxurious color palette: gold, silver, black, deep blue. Celebratory and hopeful atmosphere. {recipient} {message} {date} {details}",
         "aspect_ratio": "16:9",
         "description": "Sophisticated celebration with champagne and fireworks"
     },
     "Graduation": {
-        "prompt": "An inspiring graduation scene with cap and diploma, books, achievement symbols, bright future ahead imagery. Colors: traditional academic blue, gold, white. Uplifting and proud atmosphere with professional photography style. {custom_text}",
+        "prompt": "An inspiring graduation scene with cap and diploma, books, achievement symbols, bright future ahead imagery. Colors: traditional academic blue, gold, white. Uplifting and proud atmosphere with professional photography style. {recipient} {message} {date} {details}",
         "aspect_ratio": "16:9",
         "description": "Academic achievement scene with cap and diploma"
     },
     "Wedding": {
-        "prompt": "An elegant wedding scene with beautiful floral arrangements, soft romantic lighting, elegant venue details, delicate lace and fabric textures. Soft color palette: ivory, blush pink, champagne, sage green. Dreamy and romantic atmosphere. {custom_text}",
+        "prompt": "An elegant wedding scene with beautiful floral arrangements, soft romantic lighting, elegant venue details, delicate lace and fabric textures. Soft color palette: ivory, blush pink, champagne, sage green. Dreamy and romantic atmosphere. {recipient} {message} {date} {details}",
         "aspect_ratio": "16:9",
         "description": "Elegant romantic scene with flowers and soft lighting"
     },
     "Thank You": {
-        "prompt": "A warm, appreciative scene with elegant flowers in vase, handwritten note aesthetic, natural morning light through window, cozy interior setting. Soft, grateful atmosphere with cream, sage, and gold tones. {custom_text}",
+        "prompt": "A warm, appreciative scene with elegant flowers in vase, handwritten note aesthetic, natural morning light through window, cozy interior setting. Soft, grateful atmosphere with cream, sage, and gold tones. {recipient} {message} {date} {details}",
         "aspect_ratio": "16:9",
         "description": "Warm scene expressing gratitude with flowers and elegant details"
     }
@@ -275,19 +275,22 @@ def generate_greeting_card(
         if not template:
             return None, None, "❌ Invalid template selected"
         
-        # Build custom text for prompt
-        custom_elements = []
-        if recipient_name:
-            custom_elements.append(f"for {recipient_name}")
-        if custom_message:
-            custom_elements.append(f"with message '{custom_message}'")
-        if additional_details:
-            custom_elements.append(additional_details)
-        
-        custom_text = " ".join(custom_elements) if custom_elements else ""
+        # Build custom text components
+        recipient_part = f"The card should be made out to {recipient_name}." if recipient_name else ""
+        message_part = f"The card should include the message '{custom_message}'." if custom_message else ""
+        date_part = f"The date '{date_text}' should be displayed." if date_text else ""
+        details_part = f"Include these elements: {additional_details}." if additional_details else ""
         
         # Format prompt
-        prompt = template["prompt"].format(custom_text=custom_text)
+        prompt = template["prompt"].format(
+            recipient=recipient_part,
+            message=message_part,
+            date=date_part,
+            details=details_part
+        )
+        
+        # Clean up extra whitespace
+        prompt = " ".join(prompt.split())
         
         status_messages.append("🎨 Generating image with Seedream-4.5...")
         
