@@ -1,6 +1,7 @@
 import gradio as gr
 import replicate
 import os
+from dotenv import load_dotenv
 import uuid
 import io
 from datetime import datetime
@@ -13,6 +14,9 @@ from urllib.parse import quote
 # ===========================
 # CONFIGURATION
 # ===========================
+
+# Load environment variables
+load_dotenv()
 
 # Replicate API (should be set in environment)
 # Set REPLICATE_API_TOKEN in your environment

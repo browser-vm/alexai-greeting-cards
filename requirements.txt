@@ -3,3 +3,4 @@ replicate
 Pillow
 boto3
 requests
+python-dotenv
