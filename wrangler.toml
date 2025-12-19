@@ -10,7 +10,6 @@ compatibility_date = "2024-01-01"
 [[r2_buckets]]
 binding = "CARDS_BUCKET"
 bucket_name = "greeting-cards"
-preview_bucket_name = "greeting-cards-preview"  # Optional: separate bucket for testing
 
 # Routes (customize these for your domain)
 # Uncomment and modify when you have a custom domain
