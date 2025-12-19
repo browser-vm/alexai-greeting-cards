@@ -302,7 +302,16 @@ def generate_greeting_card(
         status_messages.append("✅ Image generated successfully!")
         
         # Download image
-        image_url = output[0].url if hasattr(output[0], 'url') else output[0]
+        # Handle both object with .read() (newer replicate) and URL string (older/other models)
+        if hasattr(output[0], 'read'):
+            image_data = output[0].read()
+            image_url = output[0].url if hasattr(output[0], 'url') else None
+        elif isinstance(output[0], str) and output[0].startswith('http'):
+            import requests
+            image_data = requests.get(output[0]).content
+            image_url = output[0]
+        else:
+            raise ValueError(f"Unexpected output format: {type(output[0])}")
         
         # Generate unique ID
         card_id = str(uuid.uuid4())
@@ -311,7 +320,7 @@ def generate_greeting_card(
         # Save original
         original_path = f"/tmp/card_{card_id}_original.jpg"
         with open(original_path, "wb") as f:
-            f.write(output[0].read() if hasattr(output[0], 'read') else output[0])
+            f.write(image_data)
         
         status_messages.append("🎨 Adding watermark...")
         
